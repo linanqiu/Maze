@@ -31,7 +31,7 @@ namespace MazeFunctions
 
             if (direction == null)
             {
-                return new BadRequestErrorMessageResult("No direction provided");
+                return new BadRequestErrorMessageResult("No directions provided");
             }
 
             var mazeData = mazeDatas.FirstOrDefault();
