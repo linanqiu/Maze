@@ -41,3 +41,11 @@ curl https://linansmaze.azurewebsites.net/api/SolveMaze/7a85aa0d-8c63-4930-9e44-
 ```
 
 Yup that's pretty brutal.
+
+If you're Linan, you can try hitting the DiagnoseMaze endpoint:
+
+```
+curl https://linansmaze.azurewebsites.net/api/DiagnoseMaze/7a85aa0d-8c63-4930-9e44-46f74bdfaea2?<specialkeystring>
+
+> <maze visualized>
+```
