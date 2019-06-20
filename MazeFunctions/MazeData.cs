@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Maze
+namespace MazeFunctions
 {
     public class MazeData
     {
