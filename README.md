@@ -12,6 +12,8 @@ curl https://linansmaze.azurewebsites.net/api/GenerateMaze
 
 This tells you the `Id` of the maze (`7a85aa0d-8c63-4930-9e44-46f74bdfaea2`) and the `(Width, Height)` of the maze `(39, 39)`.
 
+![Screen Shot 2019-06-20 at 12.00.59 PM.png](Screen Shot 2019-06-20 at 12.00.59 PM.png)
+
 You start at `(0, 0)` and should find a path (as a series of `NSEW` instructions) that navigates to `(Width - 1, Height - 1)` (e.g. `(38, 38)`) since we zero index.
 
 However, you can only check one cell at a time if the cell is land (you can walk on it) or lava (you can't walk on it).
