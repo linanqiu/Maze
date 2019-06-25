@@ -61,4 +61,4 @@ C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/SolveMaze/4b4f
 
 `ExpiryTime` could be null (backwards compatibility with earlier mazes I was testing with)
 
-Happy solving!
+Happy soWolving!
