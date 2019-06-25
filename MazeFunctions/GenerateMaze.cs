@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -29,7 +30,8 @@ namespace MazeFunctions
                 Id = mazeData.Id,
                 Width = mazeData.Dimensions.width,
                 Height = mazeData.Dimensions.height,
-                ExpiryTime = mazeData.ExpiryTime.ToString()
+                ServerTime = DateTime.Now.ToString("G"),
+                ExpiryTime = mazeData.ExpiryTime?.ToString("G")
             };
 
             return new OkObjectResult(JsonConvert.SerializeObject(result));

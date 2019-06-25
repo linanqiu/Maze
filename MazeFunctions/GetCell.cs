@@ -38,7 +38,8 @@ namespace MazeFunctions
 
                 if (mazeData.IsExpired())
                 {
-                    return new BadRequestErrorMessageResult($"Maze has expired. MazeId={mazeData.Id}, ExpiryTime={mazeData.ExpiryTime}");
+                    return new BadRequestErrorMessageResult(
+                        $"Maze has expired. MazeId={mazeData.Id}, ServerTime={DateTime.Now:G}, ExpiryTime={mazeData.ExpiryTime?.ToString("G")}");
                 }
 
                 if (x >= mazeData.Dimensions.width || y >= mazeData.Dimensions.height)
