@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MazeFunctions
 {
@@ -24,8 +25,6 @@ namespace MazeFunctions
             IEnumerable<MazeData> mazeDatas,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
             int x;
             int y;
             if (int.TryParse(req.Query["x"], out x) && int.TryParse(req.Query["y"], out y))
@@ -33,7 +32,7 @@ namespace MazeFunctions
                 var mazeData = mazeDatas.FirstOrDefault();
                 if (mazeData == null)
                 {
-                    return new BadRequestErrorMessageResult("Something fucked up. Contact Linan");
+                    return new BadRequestErrorMessageResult($"No maze found for the given Id.");
                 }
 
                 if (x >= mazeData.Dimensions.width || y >= mazeData.Dimensions.height)
@@ -42,7 +41,15 @@ namespace MazeFunctions
                 }
 
                 var isLand = mazeData.Map[x, y];
-                return (ActionResult) new OkObjectResult($"\"x\"={x},\"y\"={y},\"isLand\"={isLand}");
+
+                var result = new
+                {
+                    X = x,
+                    Y = y,
+                    IsLand = isLand
+                };
+
+                return new OkObjectResult(JsonConvert.SerializeObject(result));
             }
 
             return new BadRequestErrorMessageResult("Bad request");

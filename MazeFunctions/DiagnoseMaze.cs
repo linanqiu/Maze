@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MazeFunctions
 {
@@ -25,22 +26,44 @@ namespace MazeFunctions
             IEnumerable<MazeData> mazeDatas,
             ILogger log)
         {
-            string direction = req.Query["directions"];
+            string steps = req.Query["steps"];
+
+            var password = Environment.GetEnvironmentVariable("MAZE_PASSWORD");
 
             var mazeData = mazeDatas.FirstOrDefault();
             if (mazeData == null)
             {
-                return new BadRequestErrorMessageResult("Something fucked up. Contact Linan");
+                return new BadRequestErrorMessageResult($"No maze found for the given Id.");
             }
 
-            if (direction == null)
+
+            if (steps == null)
             {
-                return new OkObjectResult(mazeData.ToMapString());
+                var result = new
+                {
+                    Solved = false,
+                    Password = password,
+                    Message = "Did not attempt to solve",
+                    MazeData = mazeData
+                };
+
+                return new OkObjectResult(JsonConvert.SerializeObject(result));
             }
+            else
+            {
+                var (solved, message) = SolveMaze.Solve(mazeData, steps);
 
-            var solved = SolveMaze.Solve(mazeData, direction);
+                var result = new
+                {
+                    Solved = solved,
+                    Password = password,
+                    Message = message,
+                    MazeData = mazeData,
+                    MapString = mazeData.ToMapString(),
+                };
 
-            return new OkObjectResult(mazeData.ToMapString() + Environment.NewLine + direction + Environment.NewLine + $"Result {solved}");
+                return new OkObjectResult(JsonConvert.SerializeObject(result));
+            }
         }
     }
 }

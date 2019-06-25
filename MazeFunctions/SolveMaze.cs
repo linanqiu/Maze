@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MazeFunctions
 {
@@ -25,34 +27,41 @@ namespace MazeFunctions
             IEnumerable<MazeData> mazeDatas,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            string steps = req.Query["steps"];
 
-            string direction = req.Query["directions"];
-
-            if (direction == null)
+            if (steps == null)
             {
-                return new BadRequestErrorMessageResult("No directions provided");
+                return new BadRequestErrorMessageResult("No steps provided");
             }
 
             var mazeData = mazeDatas.FirstOrDefault();
             if (mazeData == null)
             {
-                return new BadRequestErrorMessageResult("Something fucked up. Contact Linan");
+                return new BadRequestErrorMessageResult($"No maze found for the given Id.");
             }
 
-            var solved = Solve(mazeData, direction);
+            var (solved, message) = Solve(mazeData, steps);
 
-            return new OkObjectResult(mazeData.ToMapString() + Environment.NewLine + direction + Environment.NewLine + $"Result {solved}");
+            var result = new
+            {
+                Solved = solved,
+                Message = message
+            };
+
+            return new OkObjectResult(JsonConvert.SerializeObject(result));
         }
 
-        public static bool Solve(MazeData mazeData, string direction)
+        public static (bool solved, string errorMessage) Solve(MazeData mazeData, string steps)
         {
+            var stepCount = 0;
             var x = 0;
             var y = 0;
 
 
-            foreach (var c in direction)
+            foreach (var c in steps)
             {
+                stepCount++;
+
                 if (c == 'N')
                 {
                     y++;
@@ -79,12 +88,28 @@ namespace MazeFunctions
                     {
                         continue;
                     }
+                    else
+                    {
+                        return (false, $"Last step ran into a wall. LastX={x}, LastY={y}, StepsTaken={steps.Substring(0, stepCount)}, StepsSubmitted={steps}");
+                    }
                 }
-
-                return false;
+                else
+                {
+                    return (false, $"Last step exceeded dimensions of the maze. LastX={x}, LastY={y}, StepsTaken={steps.Substring(0, stepCount)}, StepsSubmited={steps}");
+                }
             }
 
-            return x == mazeData.Dimensions.width - 1 && y == mazeData.Dimensions.height - 1;
+            var solved = x == mazeData.Dimensions.width - 1 && y == mazeData.Dimensions.height - 1;
+            if (solved)
+            {
+                var password = Environment.GetEnvironmentVariable("MAZE_PASSWORD");
+                return (true, password);
+            }
+            else
+            {
+                return (false,
+                    $"Executed all steps but did not arrive at desired location of X={mazeData.Dimensions.width - 1}, Y={mazeData.Dimensions.height - 1}. LastX={x}, LastY={y}, StepsTaken={steps}");
+            }
         }
     }
 }

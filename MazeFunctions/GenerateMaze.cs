@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MazeFunctions
 {
@@ -19,11 +20,18 @@ namespace MazeFunctions
             out dynamic document,
             ILogger log)
         {
-            var (maze, mazeData) = Generate((int) DateTime.Now.Ticks, (20, 20));
+            var (maze, mazeData) = Generate((int) DateTime.Now.Ticks, (30, 30));
             log.LogInformation($"Maze created {mazeData.Id}");
             document = mazeData;
 
-            return (ActionResult) new OkObjectResult($"{{\"Id\"=\"{mazeData.Id}\",\"Width\"={mazeData.Dimensions.width},\"Height\"={mazeData.Dimensions.height}}}");
+            var result = new
+            {
+                Id = mazeData.Id,
+                Width = mazeData.Dimensions.width,
+                Height = mazeData.Dimensions.height
+            };
+
+            return new OkObjectResult(JsonConvert.SerializeObject(result));
         }
 
         private static (Maze, MazeData) Generate(int seed, (int width, int height) dimensions)
