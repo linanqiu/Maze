@@ -45,7 +45,15 @@ C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2
 {"Message":"Maze has expired. MazeId=96c37a50-0b1a-4e44-b8a4-c6455dbbc73b, ServerTime=6/25/2019 3:13:07 AM, ExpiryTime=6/25/2019 2:11:07 AM"}
 ```
 
-To solve the maze,
+To solve the maze, submit the your steps as a string of `N` (North) `S` (South) `E` (East) `W` (West) steps. For example, for the following maze:
+
+```
+1 1 1
+1 0 0
+1 0 0
+```
+
+We want to go from `(0, 0)` to `(2, 2)` via `NNEE` (since you go northwards twice then go eastwards twice). So you'd take the steps `NNEE`. To solve a large maze, you'll need something like `NNNNNNNNEEEEEEEESSE...`. For example,
 
 ```
 C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/SolveMaze/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?steps=NNNNNNNNNEEEEEEEEEEEEESSSSWWWW"
