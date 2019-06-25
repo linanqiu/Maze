@@ -5,7 +5,8 @@
 To generate a maze
 
 ```
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GenerateMaze"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GenerateMaze"
 {"Id":"4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea","Width":59,"Height":59,"ServerTime":"6/25/2019 3:10:03 AM","ExpiryTime":"6/25/2019 3:15:03 AM"}
 ```
 
@@ -20,19 +21,26 @@ You start at `(0, 0)` and should find a path (as a series of `NSEW` instructions
 However, you can only check one cell at a time if the cell is land (you can walk on it) or lava (you can't walk on it).
 
 ```
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=0&y=0"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=0&y=0"
 {"X":0,"Y":0,"IsLand":true}
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=58&y=58"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=58&y=58"
 {"X":58,"Y":58,"IsLand":true}
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=4&y=2"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=4&y=2"
 {"X":4,"Y":2,"IsLand":true}
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=4&y=1"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=4&y=1"
 {"X":4,"Y":1,"IsLand":false}
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=4&y=0"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=4&y=0"
 {"X":4,"Y":0,"IsLand":true}
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=5&y=0"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=5&y=0"
 {"X":5,"Y":0,"IsLand":true}
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=5&y=1"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=5&y=1"
 {"X":5,"Y":1,"IsLand":false}
 ```
 
@@ -41,7 +49,8 @@ This tells you that `(0, 0)` is land (which is guaranteed because you start ther
 **Once the maze is expired, you won't be able to get valid results from `GetCell` anymore.** Instead, you'll get an ugly error message like this:
 
 ```
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=5&y=1"
+
+$ curl "https://linansmaze.azurewebsites.net/api/GetCell/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?x=5&y=1"
 {"Message":"Maze has expired. MazeId=96c37a50-0b1a-4e44-b8a4-c6455dbbc73b, ServerTime=6/25/2019 3:13:07 AM, ExpiryTime=6/25/2019 2:11:07 AM"}
 ```
 
@@ -56,7 +65,8 @@ To solve the maze, submit the your steps as a string of `N` (North) `S` (South) 
 We want to go from `(0, 0)` to `(2, 2)` via `NNEE` (since you go northwards twice then go eastwards twice). So you'd take the steps `NNEE`. To solve a large maze, you'll need something like `NNNNNNNNEEEEEEEESSE...`. For example,
 
 ```
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/SolveMaze/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?steps=NNNNNNNNNEEEEEEEEEEEEESSSSWWWW"
+
+$ curl "https://linansmaze.azurewebsites.net/api/SolveMaze/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?steps=NNNNNNNNNEEEEEEEEEEEEESSSSWWWW"
 {"Solved":false,"Message":"Last step ran into a wall. LastX=0, LastY=1, StepsTaken=N, StepsSubmitted=NNNNNNNNNEEEEEEEEEEEEESSSSWWWW"}
 ```
 
@@ -65,7 +75,8 @@ C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/SolveMaze/4b4f
 I'm kind enough to give you some reason for your failure (don't we always at Bridgewater hehe). When you do solve the maze, you will get a password like this: 
 
 ```
-C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/SolveMaze/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?steps=NNNNNNNNNEEEEEEEEEEEEESSSSWWWW"
+
+$ curl "https://linansmaze.azurewebsites.net/api/SolveMaze/4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea?steps=NNNNNNNNNEEEEEEEEEEEEESSSSWWWW"
 {"Message":"Maze has expired. MazeId=96c37a50-0b1a-4e44-b8a4-c6455dbbc73b, ServerTime=6/25/2019 3:13:43 AM, ExpiryTime="}
 ```
 
