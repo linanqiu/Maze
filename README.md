@@ -1,4 +1,4 @@
-# Lava Maze
+# Step By Step
 
 *Maze game using Azure functions*
 
