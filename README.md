@@ -11,6 +11,8 @@ C:\Users\Linan Qiu>curl "https://linansmaze.azurewebsites.net/api/GenerateMaze"
 
 This tells you the `Id` of the maze (`4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea`) and the `(Width, Height)` of the maze `(59, 59)`. It also tells you that this maze expires in 5 minutes (which is the setting on the server). That means your solving algorithm's got to be fast! ;)
 
+The maze kind of looks like this (not an exact visualization. The real one's slightly bigger)
+
 ![mazescreenshot.png](mazescreenshot.png)
 
 You start at `(0, 0)` and should find a path (as a series of `NSEW` instructions) that navigates to `(Width - 1, Height - 1)` (e.g. `(58, 58)`) since we zero index.
