@@ -40,6 +40,11 @@ namespace MazeFunctions
                 return new BadRequestErrorMessageResult($"No maze found for the given Id.");
             }
 
+            if (mazeData.IsExpired())
+            {
+                return new BadRequestErrorMessageResult($"Maze has expired. MazeId={mazeData.Id}, ExpiryTime={mazeData.ExpiryTime}");
+            }
+
             var (solved, message) = Solve(mazeData, steps);
 
             var result = new

@@ -8,12 +8,14 @@ namespace MazeFunctions
         public string Id { get; }
         public (int width, int height) Dimensions { get; }
         public bool[,] Map { get; }
+        public DateTime? ExpiryTime { get; }
 
-        public MazeData(string id, (int, int) dimensions, bool[,] map)
+        public MazeData(string id, (int, int) dimensions, bool[,] map, DateTime? expiryTime = null)
         {
             Id = id;
             Dimensions = dimensions;
             Map = map;
+            ExpiryTime = expiryTime;
         }
 
         public string ToMapString()
@@ -34,6 +36,14 @@ namespace MazeFunctions
             }
 
             return sb.ToString();
+        }
+    }
+
+    public static class MazeDataExtensions
+    {
+        public static bool IsExpired(this MazeData mazeData, DateTime? dateTime = null)
+        {
+            return mazeData.ExpiryTime == null || mazeData.ExpiryTime < dateTime.GetValueOrDefault(DateTime.Now);
         }
     }
 }

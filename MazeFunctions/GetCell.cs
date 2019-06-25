@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +34,11 @@ namespace MazeFunctions
                 if (mazeData == null)
                 {
                     return new BadRequestErrorMessageResult($"No maze found for the given Id.");
+                }
+
+                if (mazeData.IsExpired())
+                {
+                    return new BadRequestErrorMessageResult($"Maze has expired. MazeId={mazeData.Id}, ExpiryTime={mazeData.ExpiryTime}");
                 }
 
                 if (x >= mazeData.Dimensions.width || y >= mazeData.Dimensions.height)

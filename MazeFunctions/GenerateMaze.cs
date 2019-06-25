@@ -28,7 +28,8 @@ namespace MazeFunctions
             {
                 Id = mazeData.Id,
                 Width = mazeData.Dimensions.width,
-                Height = mazeData.Dimensions.height
+                Height = mazeData.Dimensions.height,
+                ExpiryTime = mazeData.ExpiryTime.ToString()
             };
 
             return new OkObjectResult(JsonConvert.SerializeObject(result));
@@ -45,7 +46,8 @@ namespace MazeFunctions
             var random = new Random(saltySeed);
             var maze = new Maze(dimensions.width, dimensions.height, random);
             var map = maze.ToBools();
-            var mazeData = new MazeData(Guid.NewGuid().ToString(), (map.GetLength(0), map.GetLength(1)), map);
+            var expirationSeconds = int.Parse(Environment.GetEnvironmentVariable("MAZE_EXPIRATION_SECONDS"));
+            var mazeData = new MazeData(Guid.NewGuid().ToString(), (map.GetLength(0), map.GetLength(1)), map, DateTime.Now.AddSeconds(expirationSeconds));
             return (maze, mazeData);
         }
     }
