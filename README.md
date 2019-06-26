@@ -7,10 +7,10 @@ To generate a maze
 ```
 
 $ curl "https://linansmaze.azurewebsites.net/api/GenerateMaze"
-{"Id":"4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea","Width":59,"Height":59,"ServerTime":"6/25/2019 3:10:03 AM","ExpiryTime":"6/25/2019 3:15:03 AM"}
+{"Id":"4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea","Width":59,"Height":59,"ServerTime":"6/25/2019 3:10:03 AM","ExpiryTime":"6/25/2019 3:13:03 AM"}
 ```
 
-This tells you the `Id` of the maze (`4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea`) and the `(Width, Height)` of the maze `(59, 59)`. It also tells you that this maze expires in 5 minutes (which is the setting on the server). That means your solving algorithm's got to be fast! ;)
+This tells you the `Id` of the maze (`4b4fb2f3-b208-4ea2-a0f9-98f0f81ac5ea`) and the `(Width, Height)` of the maze `(59, 59)`. It also tells you that this maze expires in 3 minutes (which is the setting on the server). That means your solving algorithm's got to be fast! ;)
 
 The maze kind of looks like this (not an exact visualization. The real one's slightly bigger)
 
